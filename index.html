@@ -149,6 +149,23 @@
                     </div>
                 </div>
 
+                <!-- Download Section -->
+                <div class="px-8 md:px-12 pb-12 mt-4 pt-8 border-t border-gray-200 text-center">
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Descargar el Juego</h3>
+                    <div class="flex items-center justify-center mb-6">
+                        <input id="terms-checkbox" type="checkbox" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                        <label for="terms-checkbox" class="ml-3 block text-md text-gray-700">
+                            He leído y acepto los <a href="#" id="show-terms-link" class="font-medium text-indigo-600 hover:underline">Términos de Uso</a> y la <a href="#" id="show-privacy-link" class="font-medium text-indigo-600 hover:underline">Política de Privacidad</a>.
+                        </label>
+                    </div>
+
+                    <!-- Download Button -->
+                    <a id="download-btn" href="https://www.dropbox.com/homehttps://www.dropbox.com/scl/fi/luxk7aw6535eq6gr3fxkh/Salami-07.rar?rlkey=7se1nn11gm6s0acmjiy1kph5s&st=vhrcnnwu&dl=1" class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-md text-white bg-gray-400 cursor-not-allowed pointer-events-none transition-colors duration-300">
+                        <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" /><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" /></svg>
+                        Descargar
+                    </a>
+                </div>
+
             </div>
         </div>
     </main>
@@ -157,41 +174,62 @@
     <footer class="bg-white">
         <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
             <p>&copy; 2025 LasgarStudios. Todos los derechos reservados.</p>
-            <p class="mt-1">
-                <a href="#" class="hover:underline">Volver arriba</a>
-            </p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const contents = document.querySelectorAll('.tab-content');
+            const tabTerms = document.getElementById('tab-terms');
+            const tabPrivacy = document.getElementById('tab-privacy');
+            const contentTerms = document.getElementById('content-terms');
+            const contentPrivacy = document.getElementById('content-privacy');
+            
+            const checkbox = document.getElementById('terms-checkbox');
+            const downloadBtn = document.getElementById('download-btn');
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Deactivate all tabs
-                    tabs.forEach(item => {
-                        item.classList.remove('border-indigo-500', 'text-indigo-600');
-                        item.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                    });
+            const showTermsLink = document.getElementById('show-terms-link');
+            const showPrivacyLink = document.getElementById('show-privacy-link');
 
-                    // Hide all content
-                    contents.forEach(content => {
-                        content.classList.add('hidden');
-                    });
+            // Function to switch tabs
+            function switchTab(activeTab, inactiveTab, activeContent, inactiveContent) {
+                // Style active tab
+                activeTab.classList.add('border-indigo-500', 'text-indigo-600');
+                activeTab.classList.remove('border-transparent', 'text-gray-500');
+                
+                // Style inactive tab
+                inactiveTab.classList.remove('border-indigo-500', 'text-indigo-600');
+                inactiveTab.classList.add('border-transparent', 'text-gray-500');
 
-                    // Activate the clicked tab
-                    tab.classList.add('border-indigo-500', 'text-indigo-600');
-                    tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                // Show/hide content
+                activeContent.classList.remove('hidden');
+                inactiveContent.classList.add('hidden');
+            }
 
-                    // Show the corresponding content
-                    const targetId = tab.id.replace('tab-', 'content-');
-                    const targetContent = document.getElementById(targetId);
-                    if (targetContent) {
-                        targetContent.classList.remove('hidden');
-                    }
-                });
+            tabTerms.addEventListener('click', () => switchTab(tabTerms, tabPrivacy, contentTerms, contentPrivacy));
+            tabPrivacy.addEventListener('click', () => switchTab(tabPrivacy, tabTerms, contentPrivacy, contentTerms));
+
+            // Links in checkbox label to switch tabs
+            showTermsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                tabTerms.click();
+                tabTerms.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            showPrivacyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                tabPrivacy.click();
+                tabPrivacy.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            // Logic to enable/disable download button
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    downloadBtn.classList.remove('bg-gray-400', 'cursor-not-allowed', 'pointer-events-none');
+                    downloadBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-700', 'cursor-pointer');
+                } else {
+                    downloadBtn.classList.add('bg-gray-400', 'cursor-not-allowed', 'pointer-events-none');
+                    downloadBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700', 'cursor-pointer');
+                }
             });
         });
     </script>
